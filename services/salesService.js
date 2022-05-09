@@ -22,7 +22,18 @@ const findSale = async (id) => {
     .map(({ date, productId, quantity }) => ({ date, productId, quantity }));
 };
 
+const registerNewSale = async (sales) => {
+  const saleId = await salesModel.registerSale();
+  const productsSold = await salesModel.registerSaleProduct(saleId, sales);
+
+  return {
+    id: saleId,
+    itemsSold: [...productsSold],
+  };
+};
+
 module.exports = {
   getAll,
   findSale,
+  registerNewSale,
 };

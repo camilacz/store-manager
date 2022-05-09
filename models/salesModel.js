@@ -23,7 +23,29 @@ const findSale = async (id) => {
   return sale;
 };
 
+const registerSale = async () => {
+  const query = 'INSERT INTO sales(date) VALUES (NOW());';
+  const [sale] = await connection.execute(query);
+  return sale.insertId;
+};
+
+const registerSaleProduct = async (saleId, sales) => {
+  const query = `
+  INSERT INTO sales_products(sale_id, product_id, quantity)
+  VALUES (?, ?, ?);
+  `;
+
+  const newSales = sales.map(
+    (sale) => connection.execute(query, [saleId, sale.productId, sale.quantity]),
+  );
+  await Promise.all(newSales);
+
+  return [...sales];
+};
+
 module.exports = {
   getAll,
   findSale,
+  registerSale,
+  registerSaleProduct,
 };

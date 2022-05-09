@@ -8,12 +8,19 @@ const schema = Joi.object({
 });
 
 const validateSale = (req, _res, next) => {
-  const { productId, quantity } = req.body;
+  const productsSold = req.body;
 
-  const { error } = schema.validate({ productId, quantity });
-  if (error) {
-    const { type, message } = error.details[0];
-    const status = type.includes('required') ? BAD_REQUEST : UNPROCESSABLE_ENTITY;
+  const itemsValidation = productsSold.map((item) => {
+    const { productId, quantity } = item;
+    return schema.validate({ productId, quantity });
+  });
+
+  const invalidData = itemsValidation.find((validation) => validation.error);
+  if (invalidData) {
+    const { type, message } = invalidData.error.details[0];
+    const status = type.includes('required')
+      ? BAD_REQUEST
+      : UNPROCESSABLE_ENTITY;
     return next(handleError(status, message));
   }
 
