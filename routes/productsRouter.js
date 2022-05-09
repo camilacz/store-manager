@@ -12,5 +12,6 @@ productsRouter.post(
   rescue(productsMiddlewares.validateProduct),
   rescue(productsController.registerProduct),
 );
+productsRouter.put('/:id', rescue(productsController.updateProduct));
 
 module.exports = productsRouter;

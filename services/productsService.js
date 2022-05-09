@@ -31,8 +31,20 @@ const registerProduct = async (name, quantity) => {
   return registeredProduct;
 };
 
+const updateProduct = async (id, name, quantity) => {
+  const product = await productsModel.findProduct(id);
+
+  if (product.length === 0) {
+    throw handleError(NOT_FOUND, 'Product not found');
+  }
+
+  const updatedProduct = await productsModel.updateProduct(id, name, quantity);
+  return updatedProduct;
+};
+
 module.exports = {
   getAll,
   findProduct,
   registerProduct,
+  updateProduct,
 };
