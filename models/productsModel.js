@@ -20,7 +20,33 @@ const findProduct = async (id) => {
   return product;
 };
 
+const registerProduct = async (name, quantity) => {
+  const query = `
+  INSERT INTO products(name, quantity)
+  VALUES (?, ?);
+  `;
+  const [newProduct] = await connection.execute(query, [name, quantity]);
+
+  return {
+    id: newProduct.insertId,
+    name,
+    quantity,
+  };
+};
+
+const getProductByName = async (name) => {
+  const query = `
+  SELECT * FROM products
+  WHERE name = ?;
+  `;
+
+  const [product] = await connection.execute(query, [name]);
+  return product;
+};
+
 module.exports = {
   getAll,
   findProduct,
+  registerProduct,
+  getProductByName,
 };
