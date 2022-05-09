@@ -17,5 +17,6 @@ productsRouter.put(
   rescue(productsMiddlewares.validateProduct),
   rescue(productsController.updateProduct),
 );
+productsRouter.delete('/:id', rescue(productsController.deleteProduct));
 
 module.exports = productsRouter;

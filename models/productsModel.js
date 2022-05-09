@@ -13,7 +13,7 @@ const getAll = async () => {
 const findProduct = async (id) => {
   const query = `
   SELECT * FROM products
-  WHERE id=?
+  WHERE id=?;
   `;
   const [product] = await connection.execute(query, [id]);
 
@@ -48,12 +48,21 @@ const updateProduct = async (id, name, quantity) => {
   const query = `
   UPDATE products
   SET name = ?, quantity = ?
-  WHERE id = ?
+  WHERE id = ?;
   `;
 
   await connection.execute(query, [name, quantity, id]);
 
   return { id, name, quantity };
+};
+
+const deleteProduct = async (id) => {
+  const query = `
+  DELETE FROM products
+  WHERE id = ?;
+  `;
+
+  await connection.execute(query, [id]);
 };
 
 module.exports = {
@@ -62,4 +71,5 @@ module.exports = {
   registerProduct,
   getProductByName,
   updateProduct,
+  deleteProduct,
 };
