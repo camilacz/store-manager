@@ -12,6 +12,10 @@ productsRouter.post(
   rescue(productsMiddlewares.validateProduct),
   rescue(productsController.registerProduct),
 );
-productsRouter.put('/:id', rescue(productsController.updateProduct));
+productsRouter.put(
+  '/:id',
+  rescue(productsMiddlewares.validateProduct),
+  rescue(productsController.updateProduct),
+);
 
 module.exports = productsRouter;
