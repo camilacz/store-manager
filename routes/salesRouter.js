@@ -17,5 +17,6 @@ salesRouter.put(
   rescue(salesMiddlewares.validateSale),
   rescue(salesController.updateSale),
 );
+salesRouter.delete('/:id', rescue(salesController.deleteSale));
 
 module.exports = salesRouter;

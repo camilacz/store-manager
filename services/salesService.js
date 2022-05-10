@@ -50,9 +50,20 @@ const updateSale = async (id, sale) => {
   };
 };
 
+const deleteSale = async (id) => {
+  const existingSale = await salesModel.findSale(id);
+  if (existingSale.length === 0) {
+    throw handleError(NOT_FOUND, 'Sale not found');
+  }
+
+  await salesModel.deleteProductSale(id);
+  await salesModel.deleteSale(id);
+};
+
 module.exports = {
   getAll,
   findSale,
   registerNewSale,
   updateSale,
+  deleteSale,
 };
