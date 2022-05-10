@@ -1,4 +1,5 @@
 const salesModel = require('../models/salesModel');
+const productsModel = require('../models/productsModel');
 const handleError = require('../utils/handleError');
 const serialize = require('../utils/serialize');
 const { NOT_FOUND } = require('../utils/statusCode');
@@ -32,8 +33,26 @@ const registerNewSale = async (sales) => {
   };
 };
 
+const updateSale = async (id, sale) => {
+  const existingSale = await salesModel.findSale(id);
+  if (existingSale.length === 0) {
+    throw handleError(NOT_FOUND, 'Sale not found');
+  }
+
+  const existingProduct = await productsModel.findProduct(sale[0].productId);
+  if (existingProduct.length === 0) {
+    throw handleError(NOT_FOUND, 'Product not found');
+  }
+
+  const updatedSale = await salesModel.updateSale(id, sale);
+  return {
+    saleId: Number(id), itemUpdated: [...updatedSale],
+  };
+};
+
 module.exports = {
   getAll,
   findSale,
   registerNewSale,
+  updateSale,
 };

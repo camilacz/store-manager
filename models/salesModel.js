@@ -43,9 +43,21 @@ const registerSaleProduct = async (saleId, sales) => {
   return [...sales];
 };
 
+const updateSale = async (id, productSale) => {
+  const query = `
+  UPDATE sales_products
+  SET product_id = ?, quantity = ?
+  WHERE sale_id = ?;
+  `;
+  const [{ productId, quantity }] = productSale;
+  await connection.execute(query, [productId, quantity, id]);
+  return [...productSale];
+};
+
 module.exports = {
   getAll,
   findSale,
   registerSale,
   registerSaleProduct,
+  updateSale,
 };

@@ -12,5 +12,10 @@ salesRouter.post(
   rescue(salesMiddlewares.validateSale),
   rescue(salesController.registerNewSale),
 );
+salesRouter.put(
+  '/:id',
+  rescue(salesMiddlewares.validateSale),
+  rescue(salesController.updateSale),
+);
 
 module.exports = salesRouter;
