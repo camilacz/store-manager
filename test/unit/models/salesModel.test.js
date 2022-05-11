@@ -31,10 +31,10 @@ const postResult = [{
 
 describe('SalesModel: a função "getAll" retorna os dados corretos', () => {
   describe('quando não há vendas no db', () => {
-    before(() => {
+    beforeEach(() => {
       sinon.stub(connection, 'execute').resolves(noResults);
     })
-    after(() => {
+    afterEach(() => {
       connection.execute.restore();
     })
 
@@ -46,10 +46,10 @@ describe('SalesModel: a função "getAll" retorna os dados corretos', () => {
   });
 
   describe('quando há vendas registradas no db', () => {
-    before(() => {
+    beforeEach(() => {
       sinon.stub(connection, 'execute').resolves(manyResults);
     })
-    after(() => {
+    afterEach(() => {
       connection.execute.restore();
     })
 
@@ -71,10 +71,10 @@ describe('SalesModel: a função "getAll" retorna os dados corretos', () => {
 
 describe('SalesModel: a função "findSale" retorna os dados corretos, segundo o id informado', () => {
   describe('quando não existe venda com o id solicitado no db', () => {
-    before(() => {
+    beforeEach(() => {
       sinon.stub(connection, 'execute').resolves(noResults);
     })
-    after(() => {
+    afterEach(() => {
       connection.execute.restore();
     })
 
@@ -86,10 +86,10 @@ describe('SalesModel: a função "findSale" retorna os dados corretos, segundo o
   });
 
   describe('quando há alguma venda com o id solicitado', () => {
-    before(() => {
+    beforeEach(() => {
       sinon.stub(connection, 'execute').resolves(manyResults);
     })
-    after(() => {
+    afterEach(() => {
       connection.execute.restore();
     })
 
@@ -119,10 +119,10 @@ describe('SalesModel: a função "findSale" retorna os dados corretos, segundo o
 });
 
 describe('SalesModel: a função "registerSale" retorna os dados corretos', () => {
-  before(() => {
+  beforeEach(() => {
     sinon.stub(connection, 'execute').resolves(postResult);
   })
-  after(() => {
+  afterEach(() => {
     connection.execute.restore();
   })
 
@@ -138,10 +138,10 @@ describe('SalesModel: a função "registerSale" retorna os dados corretos', () =
 });
 
 describe('SalesModel: a função "registerSaleProduct" retorna os dados corretos', () => {
-  before(() => {
+  beforeEach(() => {
     sinon.stub(connection, 'execute').resolves(postResult);
   })
-  after(() => {
+  afterEach(() => {
     connection.execute.restore();
   })
 
@@ -153,10 +153,10 @@ describe('SalesModel: a função "registerSaleProduct" retorna os dados corretos
 });
 
 describe('SalesModel: a função "updateSale"', () => {
-  before(() => {
+  beforeEach(() => {
     sinon.stub(connection, 'execute').resolves(noResults);
   })
-  after(() => {
+  afterEach(() => {
     connection.execute.restore();
   })
 
@@ -168,10 +168,10 @@ describe('SalesModel: a função "updateSale"', () => {
 });
 
 describe('SalesModel: a função "deleteSale"', () => {
-  before(() => {
+  beforeEach(() => {
     sinon.stub(connection, 'execute').resolves(noResults);
   })
-  after(() => {
+  afterEach(() => {
     connection.execute.restore();
   })
 
@@ -182,10 +182,10 @@ describe('SalesModel: a função "deleteSale"', () => {
 });
 
 describe('SalesModel: a função "deleteProductSale"', () => {
-  before(() => {
+  beforeEach(() => {
     sinon.stub(connection, 'execute').resolves(noResults);
   })
-  after(() => {
+  afterEach(() => {
     connection.execute.restore();
   })
 

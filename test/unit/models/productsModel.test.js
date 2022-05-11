@@ -20,11 +20,11 @@ const postResult = [{
 
 describe('ProductsModel: a função "getAll" retorna todos os produtos do db', () => {
   describe('- quando não existe nenhum produto', () => {
-    before(() => {
+    beforeEach(() => {
       sinon.stub(connection, 'execute').resolves(noResults);
     })
 
-    after(() => {
+    afterEach(() => {
       connection.execute.restore();
     })
 
@@ -40,11 +40,11 @@ describe('ProductsModel: a função "getAll" retorna todos os produtos do db', (
   });
 
   describe('- quando existem produtos registrados no db', () => {
-    before(() => {
+    beforeEach(() => {
       sinon.stub(connection, 'execute').resolves(oneResult);
     })
 
-    after(() => {
+    afterEach(() => {
       connection.execute.restore();
     })
 
@@ -72,11 +72,11 @@ describe('ProductsModel: a função "getAll" retorna todos os produtos do db', (
 
 describe('ProductsModel: a função "findProduct" retorna o produto de acordo com o id', () => {
   describe('- quando o id não existe no db', () => {
-    before(() => {
+    beforeEach(() => {
       sinon.stub(connection, 'execute').resolves(noResults);
     })
 
-    after(() => {
+    afterEach(() => {
       connection.execute.restore();
     })
 
@@ -87,12 +87,12 @@ describe('ProductsModel: a função "findProduct" retorna o produto de acordo co
     })
   });
 
-  describe('- quando existe um id correspondente no db', async () => {
-    before(() => {
+  describe('- quando existe um id correspondente no db', () => {
+    beforeEach(() => {
       sinon.stub(connection, 'execute').resolves(oneResult);
     })
 
-    after(() => {
+    afterEach(() => {
       connection.execute.restore();
     })
 
@@ -125,10 +125,10 @@ describe('ProductsModel: a função "findProduct" retorna o produto de acordo co
 });
 
 describe('ProductsModel: a função "registerProduct"', () => {
-  before(() => {
+  beforeEach(() => {
     sinon.stub(connection, 'execute').resolves(postResult);
   })
-  after(() => {
+  afterEach(() => {
     connection.execute.restore();
   })
 
@@ -151,10 +151,10 @@ describe('ProductsModel: a função "registerProduct"', () => {
 
 describe('ProductsModel: a função "getProductByName"', () => {
   describe('quando não encontra um produto com nome solicitado', () => {
-    before(() => {
+    beforeEach(() => {
       sinon.stub(connection, 'execute').resolves(noResults);
     })
-    after(() => {
+    afterEach(() => {
       connection.execute.restore();
     })
 
@@ -166,10 +166,10 @@ describe('ProductsModel: a função "getProductByName"', () => {
   });
 
   describe('quando encontra um produto com o nome desejado', () => {
-    before(() => {
+    beforeEach(() => {
       sinon.stub(connection, 'execute').resolves(oneResult);
     })
-    after(() => {
+    afterEach(() => {
       connection.execute.restore();
     })
 
@@ -197,10 +197,10 @@ describe('ProductsModel: a função "getProductByName"', () => {
 });
 
 describe('ProductsModel: a função "updateProduct"', () => {
-  before(() => {
+  beforeEach(() => {
     sinon.stub(connection, 'execute').resolves(noResults);
   })
-  after(() => {
+  afterEach(() => {
     connection.execute.restore();
   })
   const params = [1, 'novo nome', 10];
@@ -217,10 +217,10 @@ describe('ProductsModel: a função "updateProduct"', () => {
 });
 
 describe('ProductsModel: a função "deleteProduct"', () => {
-  before(() => {
+  beforeEach(() => {
     sinon.stub(connection, 'execute').resolves(noResults);
   })
-  after(() => {
+  afterEach(() => {
     connection.execute.restore();
   })
 

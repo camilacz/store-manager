@@ -45,10 +45,10 @@ const updateResult = [
 
 describe('SalesService: a função "getAll" retorna os dados corretos', () => {
   describe('quando não há vendas registradas no db', () => {
-    before(() => {
+    beforeEach(() => {
       sinon.stub(salesModel, 'getAll').resolves(noResults);
     })
-    after(() => {
+    afterEach(() => {
       salesModel.getAll.restore();
     })
 
@@ -60,10 +60,10 @@ describe('SalesService: a função "getAll" retorna os dados corretos', () => {
   });
 
   describe('quando há vendas registradas no db', () => {
-    before(() => {
+    beforeEach(() => {
       sinon.stub(salesModel, 'getAll').resolves(completeResults);
     })
-    after(() => {
+    afterEach(() => {
       salesModel.getAll.restore();
     })
 
@@ -85,10 +85,10 @@ describe('SalesService: a função "getAll" retorna os dados corretos', () => {
 
 describe('SalesService: a função "findSale"', () => {
   describe('se há uma venda correspondente ao id passado', () => {
-    before(() => {
+    beforeEach(() => {
       sinon.stub(salesModel, 'findSale').resolves(completeResults);
     })
-    after(() => {
+    afterEach(() => {
       salesModel.findSale.restore();
     })
 
@@ -112,11 +112,11 @@ describe('SalesService: a função "findSale"', () => {
 });
 
 describe('SalesService: a função "registerNewSale"', () => {
-  before(() => {
+  beforeEach(() => {
     sinon.stub(salesModel, 'registerSale').resolves(5);
     sinon.stub(salesModel, 'registerSaleProduct').resolves(registerSaleResult)
   })
-  after(() => {
+  afterEach(() => {
     salesModel.registerSale.restore();
     salesModel.registerSaleProduct.restore();
   })
@@ -148,13 +148,13 @@ describe('SalesService: a função "registerNewSale"', () => {
 });
 
 describe('SalesService: a função "updateSale"', () => {
-  describe('quando a requisição é válida', async () => {
-    before(() => {
+  describe('quando a requisição é válida', () => {
+    beforeEach(() => {
       sinon.stub(salesModel, 'findSale').resolves(completeResults);
       sinon.stub(salesModel, 'updateSale').resolves(updateResult);
       sinon.stub(productsModel, 'findProduct').resolves(productResult);
     })
-    after(() => {
+    afterEach(() => {
       salesModel.findSale.restore();
       salesModel.updateSale.restore();
       productsModel.findProduct.restore();
@@ -184,12 +184,12 @@ describe('SalesService: a função "updateSale"', () => {
 });
 
 // describe('SalesService: a função "deleteSale"', () => {
-//   before(() => {
+//   beforeEach(() => {
 //     sinon.stub(salesModel, 'findSale').resolves(completeResults);
 //     sinon.stub(salesModel, 'deleteProductSale').resolves();
 //     sinon.stub(salesModel, 'deleteSale').resolves();
 //   })
-//   after(() => {
+//   afterEach(() => {
 //     salesModel.findSale.restore();
 //     salesModel.deleteProductSale.restore();
 //     salesModel.deleteSale.restore();
