@@ -20,6 +20,16 @@ const findProduct = async (id) => {
   return product;
 };
 
+const findAvaiableProduct = async (id, quantity) => {
+  const query = `
+  SELECT * FROM products
+  WHERE id = ? AND quantity - ? > 0;
+  `;
+
+  const [products] = await connection.execute(query, [id, quantity]);
+  return products;
+};
+
 const registerProduct = async (name, quantity) => {
   const query = `
   INSERT INTO products(name, quantity)
@@ -88,6 +98,7 @@ const decreaseQuantity = async (quantity, id) => {
 module.exports = {
   getAll,
   findProduct,
+  findAvaiableProduct,
   registerProduct,
   getProductByName,
   updateProduct,

@@ -116,23 +116,25 @@ describe('SalesService: a função "registerNewSale"', () => {
     sinon.stub(salesModel, 'registerSale').resolves(5);
     sinon.stub(salesModel, 'registerSaleProduct').resolves(registerSaleResult);
     sinon.stub(productsModel, 'decreaseQuantity').resolves();
+    sinon.stub(productsModel, 'findAvaiableProduct').resolves(productResult)
   })
   afterEach(() => {
     salesModel.registerSale.restore();
     salesModel.registerSaleProduct.restore();
     productsModel.decreaseQuantity.restore();
+    productsModel.findAvaiableProduct.restore();
   })
 
   const params = [
     {
-      "date": "2022-05-13T18:28:48.000Z",
-      "productId": 1,
-      "quantity": 5
+      date: "2022-05-13T18:28:48.000Z",
+      productId: 1,
+      quantity: 5
     },
     {
-      "date": "2022-05-13T18:28:48.000Z",
-      "productId": 2,
-      "quantity": 10
+      date: "2022-05-13T18:28:48.000Z",
+      productId: 2,
+      quantity: 10
     }
   ];
   it('retorna um objeto', async () => {

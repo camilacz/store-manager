@@ -2,7 +2,7 @@ const salesModel = require('../models/salesModel');
 const productsModel = require('../models/productsModel');
 const handleError = require('../utils/handleError');
 const serialize = require('../utils/serialize');
-const { NOT_FOUND } = require('../utils/statusCode');
+const { NOT_FOUND, UNPROCESSABLE_ENTITY } = require('../utils/statusCode');
 
 const getAll = async () => {
   const sales = await salesModel.getAll();
@@ -24,6 +24,16 @@ const findSale = async (id) => {
 };
 
 const registerNewSale = async (sales) => {
+  const validQuantity = sales.map(({ productId, quantity }) => (
+    productsModel.findAvaiableProduct(productId, quantity)
+  ));
+
+  const validations = await Promise.all(validQuantity);
+
+  if (validations.some((item) => item.length === 0)) {
+    throw handleError(UNPROCESSABLE_ENTITY, 'Such amount is not permitted to sell');
+  }
+
   const saleId = await salesModel.registerSale();
   const productsSold = await salesModel.registerSaleProduct(saleId, sales);
 
@@ -62,11 +72,9 @@ const deleteSale = async (id) => {
   }
 
   // Atualiza quantidade em products:
-  if (existingSale.length > 0) {
-    await Promise.all(existingSale.map(({ product_id, quantity }) => (
-      productsModel.increaseQuantity(quantity, product_id)
-    )));
-  }
+  await Promise.all(existingSale.map(({ product_id, quantity }) => (
+    productsModel.increaseQuantity(quantity, product_id)
+  )));
 
   await salesModel.deleteProductSale(id);
   await salesModel.deleteSale(id);
