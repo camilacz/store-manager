@@ -97,4 +97,47 @@ describe('ProductsService', () => {
       })
     });
   });
+
+  describe('A função "registerProduct" recebe um nome e quantidade', () => {
+    describe('se já existe um produto com tal nome no banco', () => {
+      beforeEach(() => {
+        sinon.stub(productsModel, 'getProductByName').resolves(oneResult);
+        sinon.stub(productsModel, 'registerProduct').resolves(postResult);
+      })
+      afterEach(() => {
+        productsModel.getProductByName.restore();
+        productsModel.registerProduct.restore();
+      })
+
+      it('gera o erro: Product already exists', async () => {
+        const error = { status: 409, message: 'Product already exists' };
+        try {
+          const data = await productsService.registerProduct();
+        } catch(err) {
+          expect(err).to.eql(error);
+        }
+      })
+    });
+
+    describe('se a requisição é válida', () => {
+      beforeEach(() => {
+        sinon.stub(productsModel, 'getProductByName').resolves(noResults);
+        sinon.stub(productsModel, 'registerProduct').resolves(postResult);
+      })
+      afterEach(() => {
+        productsModel.getProductByName.restore();
+        productsModel.registerProduct.restore();
+      })
+
+      it('retorna um objeto', async () => {
+        const data = await productsService.registerProduct();
+        expect(data).to.be.an('object');
+      })
+
+      it('o objeto tem as propriedades: id, name, quantity', async () => {
+        const data = await productsService.registerProduct();
+        expect(data).to.have.all.keys('id', 'name', 'quantity');
+      })
+    });
+  });
 });
