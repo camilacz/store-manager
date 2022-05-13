@@ -27,6 +27,11 @@ const registerNewSale = async (sales) => {
   const saleId = await salesModel.registerSale();
   const productsSold = await salesModel.registerSaleProduct(saleId, sales);
 
+  // Atualiza quantidade em products
+  await Promise.all(sales.map(({ productId, quantity }) => (
+    productsModel.decreaseQuantity(quantity, productId)
+  )));
+
   return {
     id: saleId,
     itemsSold: [...productsSold],
@@ -54,6 +59,13 @@ const deleteSale = async (id) => {
   const existingSale = await salesModel.findSale(id);
   if (existingSale.length === 0) {
     throw handleError(NOT_FOUND, 'Sale not found');
+  }
+
+  // Atualiza quantidade em products:
+  if (existingSale.length > 0) {
+    await Promise.all(existingSale.map(({ product_id, quantity }) => (
+      productsModel.increaseQuantity(quantity, product_id)
+    )));
   }
 
   await salesModel.deleteProductSale(id);

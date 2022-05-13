@@ -114,25 +114,39 @@ describe('SalesService: a função "findSale"', () => {
 describe('SalesService: a função "registerNewSale"', () => {
   beforeEach(() => {
     sinon.stub(salesModel, 'registerSale').resolves(5);
-    sinon.stub(salesModel, 'registerSaleProduct').resolves(registerSaleResult)
+    sinon.stub(salesModel, 'registerSaleProduct').resolves(registerSaleResult);
+    sinon.stub(productsModel, 'decreaseQuantity').resolves();
   })
   afterEach(() => {
     salesModel.registerSale.restore();
     salesModel.registerSaleProduct.restore();
+    productsModel.decreaseQuantity.restore();
   })
 
+  const params = [
+    {
+      "date": "2022-05-13T18:28:48.000Z",
+      "productId": 1,
+      "quantity": 5
+    },
+    {
+      "date": "2022-05-13T18:28:48.000Z",
+      "productId": 2,
+      "quantity": 10
+    }
+  ];
   it('retorna um objeto', async () => {
-    const data = await salesService.registerNewSale();
+    const data = await salesService.registerNewSale(params);
     expect(data).to.be.an('object');
   })
 
   it('o objeto tem as chaves: id, itemsSold', async () => {
-    const data = await salesService.registerNewSale();
+    const data = await salesService.registerNewSale(params);
     expect(data).to.have.all.keys('id', 'itemsSold');
   })
 
   it('a chave "itemsSold" é um array de objetos', async () => {
-    const { itemsSold } = await salesService.registerNewSale();
+    const { itemsSold } = await salesService.registerNewSale(params);
     expect(itemsSold).to.be.an('array');
     itemsSold.forEach((item) => {
       expect(item).to.be.an('object');
@@ -140,7 +154,7 @@ describe('SalesService: a função "registerNewSale"', () => {
   })
 
   it('cada objeto da chave itemsSold tem as chaves: productId, quantity', async () => {
-    const { itemsSold } = await salesService.registerNewSale();
+    const { itemsSold } = await salesService.registerNewSale(params);
     itemsSold.forEach((item) => {
       expect(item).to.have.all.keys('productId', 'quantity');
     })
