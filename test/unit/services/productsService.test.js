@@ -140,4 +140,81 @@ describe('ProductsService', () => {
       })
     });
   });
+
+  describe('A função "updateProduct"', () => {
+    describe('quando há um produto com o id passado', () => {
+      beforeEach(() => {
+        sinon.stub(productsModel, 'findProduct').resolves(oneResult);
+        sinon.stub(productsModel, 'updateProduct').resolves(postResult);
+      })
+      afterEach(() => {
+        productsModel.findProduct.restore();
+        productsModel.updateProduct.restore();
+      })
+  
+      it('retorna um objeto com as propriedades: id, name, quantity', async () => {
+        const data = await productsService.updateProduct();
+        expect(data).to.be.an('object');
+        expect(data).to.have.all.keys('id', 'name', 'quantity');
+      })
+    });
+
+    describe('quando não há nenhum produto com id passado', () => {
+      beforeEach(() => {
+        sinon.stub(productsModel, 'findProduct').resolves(noResults);
+        sinon.stub(productsModel, 'updateProduct').resolves(postResult);
+      })
+      afterEach(() => {
+        productsModel.findProduct.restore();
+        productsModel.updateProduct.restore();
+      })
+  
+      it('gera o erro: "Product not found"', async () => {
+        try {
+          await productsService.updateProduct();
+        } catch(err) {
+          const error = { status: 404, message: 'Product not found' };
+          expect(err).to.eql(error)
+        }
+      })
+    });
+  });
+
+  describe('A função "deleteProduct"', () => {
+    describe('quando o produto existe no db', () => {
+      beforeEach(() => {
+        sinon.stub(productsModel, 'findProduct').resolves(oneResult);
+        sinon.stub(productsModel, 'deleteProduct').resolves();
+      })
+      afterEach(() => {
+        productsModel.findProduct.restore();
+        productsModel.deleteProduct.restore();
+      })
+  
+      it('não tem retorno', async () => {
+        const data = await productsService.deleteProduct();
+        expect(data).to.be.undefined;
+      })
+    });
+
+    describe('quando o produto não existe', () => {
+      beforeEach(() => {
+        sinon.stub(productsModel, 'findProduct').resolves(noResults);
+        sinon.stub(productsModel, 'deleteProduct').resolves();
+      })
+      afterEach(() => {
+        productsModel.findProduct.restore();
+        productsModel.deleteProduct.restore();
+      })
+  
+      it('gera o erro: "Product not found"', async () => {
+        try {
+          await productsService.deleteProduct();
+        } catch(err) {
+          const error = { status: 404, message: 'Product not found' };
+          expect(err).to.eql(error);
+        }
+      })
+    });
+  })
 });
